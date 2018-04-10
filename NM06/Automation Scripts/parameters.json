@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_nm06FunctionApp01_name": {
+            "value": null
+        },
+        "jobCollections_nm06_sch01_name": {
+            "value": null
+        },
+        "storageAccounts_m06storage01_name": {
+            "value": null
+        },
+        "serverfarms_nm06FunctionApp01Plan_name": {
+            "value": null
+        },
+        "config_web_name": {
+            "value": null
+        },
+        "jobs_nm06_job01_name": {
+            "value": null
+        },
+        "hostNameBindings_nm06functionapp01.azurewebsites.net_name": {
+            "value": null
+        }
+    }
+}

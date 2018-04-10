@@ -1,0 +1,69 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "loadBalancers_nm02_lb01_name": {
+            "value": null
+        },
+        "virtualMachines_ng02_vm02_name": {
+            "value": null
+        },
+        "virtualMachines_nm02_vm01_name": {
+            "value": null
+        },
+        "availabilitySets_nm02_as01_name": {
+            "value": null
+        },
+        "networkInterfaces_ng02_vm02233_name": {
+            "value": null
+        },
+        "networkInterfaces_nm02_vm01707_name": {
+            "value": null
+        },
+        "publicIPAddresses_ng02_vm02_ip_name": {
+            "value": null
+        },
+        "publicIPAddresses_nm02_lb01_ip_name": {
+            "value": null
+        },
+        "publicIPAddresses_nm02_vm01_ip_name": {
+            "value": null
+        },
+        "virtualNetworks_nm02_rg01_vnet_name": {
+            "value": null
+        },
+        "storageAccounts_diagnostics998_name": {
+            "value": null
+        },
+        "networkSecurityGroups_nm02_vm01_nsg_name": {
+            "value": null
+        },
+        "subnets_default_name": {
+            "value": null
+        },
+        "securityRules_SSH_name": {
+            "value": null
+        },
+        "securityRules_HTTP_name": {
+            "value": null
+        },
+        "securityRules_HTTPS_name": {
+            "value": null
+        },
+        "virtualMachines_ng02_vm02_id": {
+            "value": null
+        },
+        "virtualMachines_nm02_vm01_id": {
+            "value": null
+        },
+        "loadBalancers_nm02_lb01_id": {
+            "value": null
+        },
+        "loadBalancers_nm02_lb01_id_1": {
+            "value": null
+        },
+        "loadBalancers_nm02_lb01_id_2": {
+            "value": null
+        }
+    }
+}

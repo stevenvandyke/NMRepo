@@ -1,0 +1,332 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_nm06FunctionApp01_name": {
+            "defaultValue": "nm06FunctionApp01",
+            "type": "String"
+        },
+        "jobCollections_nm06_sch01_name": {
+            "defaultValue": "nm06-sch01",
+            "type": "String"
+        },
+        "storageAccounts_m06storage01_name": {
+            "defaultValue": "m06storage01",
+            "type": "String"
+        },
+        "serverfarms_nm06FunctionApp01Plan_name": {
+            "defaultValue": "nm06FunctionApp01Plan",
+            "type": "String"
+        },
+        "config_web_name": {
+            "defaultValue": "web",
+            "type": "String"
+        },
+        "jobs_nm06_job01_name": {
+            "defaultValue": "nm06-job01",
+            "type": "String"
+        },
+        "hostNameBindings_nm06functionapp01.azurewebsites.net_name": {
+            "defaultValue": "nm06functionapp01.azurewebsites.net",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm06-rg01/providers/Microsoft.Scheduler/jobCollections/nm06-sch01'.",
+            "type": "Microsoft.Scheduler/jobCollections",
+            "name": "[parameters('jobCollections_nm06_sch01_name')]",
+            "apiVersion": "2016-03-01",
+            "location": "Central US",
+            "scale": null,
+            "properties": {
+                "sku": {
+                    "name": "Standard"
+                },
+                "state": "Enabled",
+                "quota": {
+                    "maxJobCount": 50,
+                    "maxRecurrence": {
+                        "frequency": "minute",
+                        "interval": 1
+                    }
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm06-rg01/providers/Microsoft.Storage/storageAccounts/m06storage01'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_m06storage01_name')]",
+            "apiVersion": "2017-10-01",
+            "location": "centralus",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": false,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm06-rg01/providers/Microsoft.Web/serverfarms/nm06FunctionApp01Plan'.",
+            "type": "Microsoft.Web/serverfarms",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "name": "[parameters('serverfarms_nm06FunctionApp01Plan_name')]",
+            "apiVersion": "2016-09-01",
+            "location": "Central US",
+            "scale": null,
+            "properties": {
+                "name": "[parameters('serverfarms_nm06FunctionApp01Plan_name')]",
+                "workerTierName": null,
+                "adminSiteName": null,
+                "hostingEnvironmentProfile": null,
+                "perSiteScaling": false,
+                "reserved": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm06-rg01/providers/Microsoft.Web/sites/nm06FunctionApp01'.",
+            "type": "Microsoft.Web/sites",
+            "kind": "functionapp",
+            "name": "[parameters('sites_nm06FunctionApp01_name')]",
+            "apiVersion": "2016-08-01",
+            "location": "Central US",
+            "tags": {
+                "hidden-related:/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm06-rg01/providers/Microsoft.Web/serverfarms/nm06FunctionApp01Plan": "empty"
+            },
+            "scale": null,
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_nm06FunctionApp01_name'),'nm06functionapp01.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "virtualIP": null,
+                        "thumbprint": null,
+                        "toUpdate": null,
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('sites_nm06FunctionApp01_name'),'nm06functionapp01.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "virtualIP": null,
+                        "thumbprint": null,
+                        "toUpdate": null,
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_nm06FunctionApp01Plan_name'))]",
+                "reserved": false,
+                "siteConfig": null,
+                "scmSiteAlsoStopped": false,
+                "hostingEnvironmentProfile": null,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "cloningInfo": null
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_nm06FunctionApp01Plan_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm06-rg01/providers/Microsoft.Scheduler/jobCollections/nm06-sch01/jobs/nm06-job01'.",
+            "type": "Microsoft.Scheduler/jobCollections/jobs",
+            "name": "[concat(parameters('jobCollections_nm06_sch01_name'), '/', parameters('jobs_nm06_job01_name'))]",
+            "apiVersion": "2016-03-01",
+            "scale": null,
+            "properties": {
+                "startTime": "2018-04-10T05:00:00Z",
+                "action": {
+                    "request": {
+                        "uri": "http://nm06functionapp01.azurewebsites.net/api/Function1?name=steve",
+                        "method": "POST"
+                    },
+                    "type": "HTTP",
+                    "retryPolicy": {
+                        "retryType": "fixed"
+                    }
+                },
+                "recurrence": {
+                    "frequency": "hour",
+                    "endTime": "2018-04-13T06:51:00Z",
+                    "interval": 1
+                },
+                "state": "enabled"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Scheduler/jobCollections', parameters('jobCollections_nm06_sch01_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm06-rg01/providers/Microsoft.Web/sites/nm06FunctionApp01/config/web'.",
+            "type": "Microsoft.Web/sites/config",
+            "name": "[concat(parameters('sites_nm06FunctionApp01_name'), '/', parameters('config_web_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Central US",
+            "tags": {
+                "hidden-related:/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm06-rg01/providers/Microsoft.Web/serverfarms/nm06FunctionApp01Plan": "empty"
+            },
+            "scale": null,
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "phpVersion": "5.6",
+                "pythonVersion": "",
+                "nodeVersion": "",
+                "linuxFxVersion": "",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": null,
+                "httpLoggingEnabled": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$nm06FunctionApp01",
+                "publishingPassword": null,
+                "appSettings": null,
+                "metadata": null,
+                "connectionStrings": null,
+                "machineKey": null,
+                "handlerMappings": null,
+                "documentRoot": null,
+                "scmType": "None",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "javaVersion": null,
+                "javaContainer": null,
+                "javaContainerVersion": null,
+                "appCommandLine": "",
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false,
+                        "virtualDirectories": null
+                    }
+                ],
+                "winAuthAdminState": 0,
+                "winAuthTenantState": 0,
+                "customAppPoolIdentityAdminState": false,
+                "customAppPoolIdentityTenantState": false,
+                "runtimeADUser": null,
+                "runtimeADUserPassword": null,
+                "loadBalancing": "LeastRequests",
+                "routingRules": [],
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "limits": null,
+                "autoHealEnabled": false,
+                "autoHealRules": null,
+                "tracingOptions": null,
+                "vnetName": "",
+                "siteAuthEnabled": false,
+                "siteAuthSettings": {
+                    "enabled": null,
+                    "unauthenticatedClientAction": null,
+                    "tokenStoreEnabled": null,
+                    "allowedExternalRedirectUrls": null,
+                    "defaultProvider": null,
+                    "clientId": null,
+                    "clientSecret": null,
+                    "issuer": null,
+                    "allowedAudiences": null,
+                    "additionalLoginParams": null,
+                    "isAadAutoProvisioned": false,
+                    "googleClientId": null,
+                    "googleClientSecret": null,
+                    "googleOAuthScopes": null,
+                    "facebookAppId": null,
+                    "facebookAppSecret": null,
+                    "facebookOAuthScopes": null,
+                    "twitterConsumerKey": null,
+                    "twitterConsumerSecret": null,
+                    "microsoftAccountClientId": null,
+                    "microsoftAccountClientSecret": null,
+                    "microsoftAccountOAuthScopes": null
+                },
+                "cors": {
+                    "allowedOrigins": [
+                        "https://functions.azure.com",
+                        "https://functions-staging.azure.com",
+                        "https://functions-next.azure.com"
+                    ]
+                },
+                "push": null,
+                "apiDefinition": null,
+                "autoSwapSlotName": null,
+                "localMySqlEnabled": false,
+                "managedServiceIdentityId": null,
+                "ipSecurityRestrictions": null,
+                "http20Enabled": true,
+                "minTlsVersion": "1.0"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_nm06FunctionApp01_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm06-rg01/providers/Microsoft.Web/sites/nm06FunctionApp01/hostNameBindings/nm06functionapp01.azurewebsites.net'.",
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "name": "[concat(parameters('sites_nm06FunctionApp01_name'), '/', parameters('hostNameBindings_nm06functionapp01.azurewebsites.net_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Central US",
+            "scale": null,
+            "properties": {
+                "siteName": "nm06FunctionApp01",
+                "domainId": null,
+                "hostNameType": "Verified"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_nm06FunctionApp01_name'))]"
+            ]
+        }
+    ]
+}

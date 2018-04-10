@@ -1,0 +1,738 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "loadBalancers_nm01_lb01_name": {
+            "defaultValue": "nm01-lb01",
+            "type": "String"
+        },
+        "virtualMachines_nm01_vm01_name": {
+            "defaultValue": "nm01-vm01",
+            "type": "String"
+        },
+        "virtualMachines_nm01_vm02_name": {
+            "defaultValue": "nm01-vm02",
+            "type": "String"
+        },
+        "availabilitySets_nm01_as01_name": {
+            "defaultValue": "nm01-as01",
+            "type": "String"
+        },
+        "networkInterfaces_nm01_vm01309_name": {
+            "defaultValue": "nm01-vm01309",
+            "type": "String"
+        },
+        "networkInterfaces_nm01_vm02330_name": {
+            "defaultValue": "nm01-vm02330",
+            "type": "String"
+        },
+        "publicIPAddresses_nm01_lb01_ip_name": {
+            "defaultValue": "nm01-lb01-ip",
+            "type": "String"
+        },
+        "publicIPAddresses_nm01_vm01_ip_name": {
+            "defaultValue": "nm01-vm01-ip",
+            "type": "String"
+        },
+        "publicIPAddresses_nm01_vm02_ip_name": {
+            "defaultValue": "nm01-vm02-ip",
+            "type": "String"
+        },
+        "virtualNetworks_nm01_rg01_vnet_name": {
+            "defaultValue": "nm01-rg01-vnet",
+            "type": "String"
+        },
+        "networkSecurityGroups_nm01_rg01_nsg_name": {
+            "defaultValue": "nm01-rg01-nsg",
+            "type": "String"
+        },
+        "publicIPAddresses_LoadBalancerFrontEnd_name": {
+            "defaultValue": "LoadBalancerFrontEnd",
+            "type": "String"
+        },
+        "subnets_default_name": {
+            "defaultValue": "default",
+            "type": "String"
+        },
+        "securityRules_default_allow_rdp_name": {
+            "defaultValue": "default-allow-rdp",
+            "type": "String"
+        },
+        "virtualMachines_nm01_vm01_id": {
+            "defaultValue": "/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Compute/disks/nm01-vm01_OsDisk_1_5e455490b252496cb3a110d5a65a66de",
+            "type": "String"
+        },
+        "virtualMachines_nm01_vm02_id": {
+            "defaultValue": "/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Compute/disks/nm01-vm02_OsDisk_1_53488cb667f54e78ad872c803c9d5f97",
+            "type": "String"
+        },
+        "loadBalancers_nm01_lb01_id": {
+            "defaultValue": "/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/loadBalancers/nm01-lb01/frontendIPConfigurations/LoadBalancerFrontEnd",
+            "type": "String"
+        },
+        "loadBalancers_nm01_lb01_id_1": {
+            "defaultValue": "/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/loadBalancers/nm01-lb01/backendAddressPools/nm01-lb01-pool",
+            "type": "String"
+        },
+        "loadBalancers_nm01_lb01_id_2": {
+            "defaultValue": "/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/loadBalancers/nm01-lb01/probes/nm01-lb01-probe",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Compute/availabilitySets/nm01-as01'.",
+            "type": "Microsoft.Compute/availabilitySets",
+            "sku": {
+                "name": "Aligned"
+            },
+            "name": "[parameters('availabilitySets_nm01_as01_name')]",
+            "apiVersion": "2017-03-30",
+            "location": "centralus",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "platformUpdateDomainCount": 5,
+                "platformFaultDomainCount": 2,
+                "virtualMachines": [
+                    {
+                        "id": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_nm01_vm01_name'))]"
+                    },
+                    {
+                        "id": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_nm01_vm02_name'))]"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_nm01_vm01_name'))]",
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_nm01_vm02_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Compute/virtualMachines/nm01-vm01'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_nm01_vm01_name')]",
+            "apiVersion": "2017-03-30",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_nm01_as01_name'))]"
+                },
+                "hardwareProfile": {
+                    "vmSize": "Standard_DS1_v2"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(parameters('virtualMachines_nm01_vm01_name'),'_OsDisk_1_5e455490b252496cb3a110d5a65a66de')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "id": "[parameters('virtualMachines_nm01_vm01_id')]"
+                        }
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_nm01_vm01_name')]",
+                    "adminUsername": "NMAdmin",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_nm01_vm01309_name'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "https://nmrgdevdiag998.blob.core.windows.net/"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_nm01_as01_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_nm01_vm01309_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Compute/virtualMachines/nm01-vm02'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_nm01_vm02_name')]",
+            "apiVersion": "2017-03-30",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_nm01_as01_name'))]"
+                },
+                "hardwareProfile": {
+                    "vmSize": "Standard_DS1_v2"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(parameters('virtualMachines_nm01_vm02_name'),'_OsDisk_1_53488cb667f54e78ad872c803c9d5f97')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "id": "[parameters('virtualMachines_nm01_vm02_id')]"
+                        }
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_nm01_vm02_name')]",
+                    "adminUsername": "NMAdmin",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_nm01_vm02330_name'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "https://nmrgdevdiag998.blob.core.windows.net/"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySets_nm01_as01_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_nm01_vm02330_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/loadBalancers/nm01-lb01'.",
+            "type": "Microsoft.Network/loadBalancers",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('loadBalancers_nm01_lb01_name')]",
+            "apiVersion": "2018-01-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "2a31970b-b619-4882-8799-bb8e9aa5ae36",
+                "frontendIPConfigurations": [
+                    {
+                        "name": "LoadBalancerFrontEnd",
+                        "etag": "W/\"e17ccc73-2c27-43b4-a225-f7f50679077c\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_LoadBalancerFrontEnd_name'))]"
+                            }
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "[concat(parameters('loadBalancers_nm01_lb01_name'),'-pool')]",
+                        "etag": "W/\"e17ccc73-2c27-43b4-a225-f7f50679077c\"",
+                        "properties": {
+                            "provisioningState": "Succeeded"
+                        }
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "[concat(parameters('loadBalancers_nm01_lb01_name'),'-rule')]",
+                        "etag": "W/\"e17ccc73-2c27-43b4-a225-f7f50679077c\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('loadBalancers_nm01_lb01_id')]"
+                            },
+                            "frontendPort": 80,
+                            "backendPort": 80,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "loadDistribution": "Default",
+                            "backendAddressPool": {
+                                "id": "[parameters('loadBalancers_nm01_lb01_id_1')]"
+                            },
+                            "probe": {
+                                "id": "[parameters('loadBalancers_nm01_lb01_id_2')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "[concat(parameters('loadBalancers_nm01_lb01_name'),'-probe')]",
+                        "etag": "W/\"e17ccc73-2c27-43b4-a225-f7f50679077c\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "Tcp",
+                            "port": 80,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+                "inboundNatRules": [],
+                "outboundNatRules": [],
+                "inboundNatPools": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_LoadBalancerFrontEnd_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/networkInterfaces/nm01-vm01309'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_nm01_vm01309_name')]",
+            "apiVersion": "2018-01-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "99c14c8a-abb7-4290-b440-418da226f580",
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "etag": "W/\"3e59f7d4-0015-43f9-8b5b-e8796228e9ca\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "10.0.1.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_nm01_vm01_ip_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_nm01_rg01_vnet_name'), parameters('subnets_default_name'))]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4",
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_nm01_lb01_name')), '/backendAddressPools/nm01-lb01-pool')]"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [],
+                    "appliedDnsServers": [],
+                    "internalDomainNameSuffix": "2ord1b5joxeexipzhzdv5yg5mb.gx.internal.cloudapp.net"
+                },
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nm01_rg01_nsg_name'))]"
+                },
+                "primary": true,
+                "virtualMachine": {
+                    "id": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_nm01_vm01_name'))]"
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_nm01_vm01_ip_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_nm01_rg01_vnet_name'), parameters('subnets_default_name'))]",
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_nm01_lb01_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nm01_rg01_nsg_name'))]",
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_nm01_vm01_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/networkInterfaces/nm01-vm02330'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_nm01_vm02330_name')]",
+            "apiVersion": "2018-01-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "0263712a-032d-4bf1-b113-50b17935fa18",
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "etag": "W/\"230394fa-bbe2-4c03-b620-00cb1ad6be31\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "10.0.1.5",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_nm01_vm02_ip_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_nm01_rg01_vnet_name'), parameters('subnets_default_name'))]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4",
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_nm01_lb01_name')), '/backendAddressPools/nm01-lb01-pool')]"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [],
+                    "appliedDnsServers": [],
+                    "internalDomainNameSuffix": "2ord1b5joxeexipzhzdv5yg5mb.gx.internal.cloudapp.net"
+                },
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nm01_rg01_nsg_name'))]"
+                },
+                "primary": true,
+                "virtualMachine": {
+                    "id": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_nm01_vm02_name'))]"
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_nm01_vm02_ip_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_nm01_rg01_vnet_name'), parameters('subnets_default_name'))]",
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_nm01_lb01_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nm01_rg01_nsg_name'))]",
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_nm01_vm02_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/networkSecurityGroups/nm01-rg01-nsg'.",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[parameters('networkSecurityGroups_nm01_rg01_nsg_name')]",
+            "apiVersion": "2018-01-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "36f27ceb-343d-4535-872a-570b91255cbb",
+                "securityRules": [
+                    {
+                        "name": "default-allow-rdp",
+                        "etag": "W/\"520e6b8c-50fb-4fb6-b87f-737b7846e790\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ],
+                "defaultSecurityRules": [
+                    {
+                        "name": "AllowVnetInBound",
+                        "etag": "W/\"520e6b8c-50fb-4fb6-b87f-737b7846e790\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowAzureLoadBalancerInBound",
+                        "etag": "W/\"520e6b8c-50fb-4fb6-b87f-737b7846e790\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from azure load balancer",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "AzureLoadBalancer",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllInBound",
+                        "etag": "W/\"520e6b8c-50fb-4fb6-b87f-737b7846e790\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all inbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowVnetOutBound",
+                        "etag": "W/\"520e6b8c-50fb-4fb6-b87f-737b7846e790\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowInternetOutBound",
+                        "etag": "W/\"520e6b8c-50fb-4fb6-b87f-737b7846e790\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to Internet",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "Internet",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllOutBound",
+                        "etag": "W/\"520e6b8c-50fb-4fb6-b87f-737b7846e790\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all outbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/publicIPAddresses/LoadBalancerFrontEnd'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('publicIPAddresses_LoadBalancerFrontEnd_name')]",
+            "apiVersion": "2018-01-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "9df4a71c-3f4d-401e-a04a-ad1c421d3e64",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/publicIPAddresses/nm01-lb01-ip'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('publicIPAddresses_nm01_lb01_ip_name')]",
+            "apiVersion": "2018-01-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "c321b038-1a38-4a0a-b975-4b5249ba5236",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/publicIPAddresses/nm01-vm01-ip'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('publicIPAddresses_nm01_vm01_ip_name')]",
+            "apiVersion": "2018-01-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "ffab3979-2a3f-4065-ad65-599f67b626a8",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/publicIPAddresses/nm01-vm02-ip'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('publicIPAddresses_nm01_vm02_ip_name')]",
+            "apiVersion": "2018-01-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "5f3e31b3-ec62-4c2b-a4f5-11d569ae00f8",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/virtualNetworks/nm01-rg01-vnet'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_nm01_rg01_vnet_name')]",
+            "apiVersion": "2018-01-01",
+            "location": "centralus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "873da2e3-75e9-4bc8-a1f9-3e475fe0df61",
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.1.0/24"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "etag": "W/\"58cf67ec-da5a-4505-9312-f20e02a58ce9\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "addressPrefix": "10.0.1.0/24"
+                        }
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false,
+                "enableVmProtection": false
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/networkSecurityGroups/nm01-rg01-nsg/securityRules/default-allow-rdp'.",
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "name": "[concat(parameters('networkSecurityGroups_nm01_rg01_nsg_name'), '/', parameters('securityRules_default_allow_rdp_name'))]",
+            "apiVersion": "2018-01-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "destinationPortRange": "3389",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 1000,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nm01_rg01_nsg_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9f847037-9073-42ac-8cdc-6cfae23a6cab/resourceGroups/nm01-rg01/providers/Microsoft.Network/virtualNetworks/nm01-rg01-vnet/subnets/default'.",
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "name": "[concat(parameters('virtualNetworks_nm01_rg01_vnet_name'), '/', parameters('subnets_default_name'))]",
+            "apiVersion": "2018-01-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "addressPrefix": "10.0.1.0/24"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_nm01_rg01_vnet_name'))]"
+            ]
+        }
+    ]
+}

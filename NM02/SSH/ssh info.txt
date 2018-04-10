@@ -1,0 +1,22 @@
+C:\Users\svandyke>ssh-keygen -t rsa -C "steve.vandyke@live.com"
+Generating public/private rsa key pair.
+Enter file in which to save the key (/c/Users/svandyke/.ssh/id_rsa):
+Created directory '/c/Users/svandyke/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /c/Users/svandyke/.ssh/id_rsa.
+Your public key has been saved in /c/Users/svandyke/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:P978fC4GkGy3uqu7pn4g1kWbgQItfx332+7Qa6D28iI steve.vandyke@live.com
+The key's randomart image is:
++---[RSA 2048]----+
+|  .o   .         |
+|  . o . + .      |
+|   o . o B o     |
+|    . . = = o    |
+|     o .S. o +   |
+|    o o  .  =..  |
+|   . . .  oo.+.  |
+|        E.*+ o=..|
+|     .o++*+B===+.|
++----[SHA256]-----+
